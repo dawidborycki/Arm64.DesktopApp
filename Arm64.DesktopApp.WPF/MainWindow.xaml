@@ -1,0 +1,88 @@
+﻿<Window x:Class="Arm64.DesktopApp.WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Arm64.DesktopApp.WPF"
+        xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+        mc:Ignorable="d"
+        Title="Arm"
+        Height="450"
+        Width="500"
+        xmlns:viewModels="clr-namespace:Arm64.DesktopApp.WPF.ViewModels">
+
+    <Window.DataContext>
+        <viewModels:MainViewModel />
+    </Window.DataContext>
+
+    <!--Styles-->
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Margin"
+                    Value="2,2,2,0" />
+            <Setter Property="FontWeight"
+                    Value="Bold" />
+        </Style>
+
+        <Style TargetType="Label">
+            <Setter Property="FontWeight"
+                    Value="Bold" />
+        </Style>
+
+        <Style TargetType="syncfusion:SfChart">
+            <Setter Property="Margin"
+                    Value="10" />
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <!--Grid configuration-->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!--Buttons-->
+        <StackPanel Grid.Row="0"
+                    Grid.Column="0"
+                    Orientation="Vertical">
+            <Button Content="Run calculations"
+                    Command="{Binding RunCalculationsCommand}" />
+            <Button Content="Plot results"
+                    Command="{Binding PlotResultsCommand}" />
+        </StackPanel>
+
+        <!--Label-->
+        <Label Grid.Row="0"
+               Grid.Column="1"
+               Content="{Binding ComputationTime, Mode=OneWay}" />
+
+        <!--Chart-->
+        <syncfusion:SfChart Grid.Row="1"
+                            Grid.ColumnSpan="2">
+            <syncfusion:SfChart.PrimaryAxis>
+                <syncfusion:NumericalAxis Header="Trial number"
+                                          FontSize="14" />
+            </syncfusion:SfChart.PrimaryAxis>
+
+            <syncfusion:SfChart.SecondaryAxis>
+                <syncfusion:NumericalAxis Header="Computation time [ms]"
+                                          FontSize="14"
+                                          Maximum="3000"
+                                          Minimum="0">
+                </syncfusion:NumericalAxis>
+            </syncfusion:SfChart.SecondaryAxis>
+
+            <syncfusion:LineSeries EnableAnimation="True"
+                                   ItemsSource="{Binding DataPoints, Mode=OneWay}"
+                                   Label="Computation time"
+                                   XBindingPath="X"
+                                   YBindingPath="Y">
+            </syncfusion:LineSeries>
+        </syncfusion:SfChart>
+    </Grid>
+</Window>
